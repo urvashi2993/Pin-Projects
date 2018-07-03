@@ -1,0 +1,42 @@
+ if(KnobReplay) {
+100     printf("[PINTOOL] Replay: syscall %ld(%s)\n", syscall_num, sysent[syscall_num].sys_name);
+101      if(strcmp(sysent[syscall_num].sys_name,"read")==0)
+102     {
+103       fgets(newbuffer,250,trace);
+104     if(strstr(newbuffer,"sys:")){
+105       char *split;
+106       split=strtok(newbuffer,":");
+107       while(split!=NULL)
+108       {
+109        count++;
+110      printf("split %s,count=%i\n",split,count);
+111       if(count==4){
+112      printf("count in 4");
+113      unsigned long buff;
+114      //long int buffadd=atol(split);
+115      fscanf(trace,"%lx",&buff);
+116     printf("value=%s",(char*)&buff);
+117      printf("not here!");
+118       printf("buff=%s",split);
+119       //printf("value in buffer=%s",(char*)(unsigned long)buffadd);
+120      split=strtok(NULL,":");
+121       count++;
+122       if (count==5){
+123          printf("size%s ",split);
+124         int size=atoi(split);
+125       printf("size=%i ",size);
+126       memcpy((void *)sys_arg[1],(void *)&buff,size);
+127      printf("sys_arg:%s\n",(char*)sys_arg[1]);
+128         for(int i=0;i<4;i++){
+129         split=strtok(NULL,":");
+130         count++;
+131         }
+132         printf("count=%i",count);
+133       }
+134       }
+135       split=strtok(NULL,":");
+136       }
+137   }
+138   }
+139   }
+
